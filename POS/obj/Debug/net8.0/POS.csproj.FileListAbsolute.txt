@@ -1,0 +1,14 @@
+D:\.Net Trainings\POS\POS\POS\bin\Debug\net8.0\POS.exe
+D:\.Net Trainings\POS\POS\POS\bin\Debug\net8.0\POS.deps.json
+D:\.Net Trainings\POS\POS\POS\bin\Debug\net8.0\POS.runtimeconfig.json
+D:\.Net Trainings\POS\POS\POS\bin\Debug\net8.0\POS.dll
+D:\.Net Trainings\POS\POS\POS\bin\Debug\net8.0\POS.pdb
+D:\.Net Trainings\POS\POS\POS\obj\Debug\net8.0\POS.GeneratedMSBuildEditorConfig.editorconfig
+D:\.Net Trainings\POS\POS\POS\obj\Debug\net8.0\POS.AssemblyInfoInputs.cache
+D:\.Net Trainings\POS\POS\POS\obj\Debug\net8.0\POS.AssemblyInfo.cs
+D:\.Net Trainings\POS\POS\POS\obj\Debug\net8.0\POS.csproj.CoreCompileInputs.cache
+D:\.Net Trainings\POS\POS\POS\obj\Debug\net8.0\POS.dll
+D:\.Net Trainings\POS\POS\POS\obj\Debug\net8.0\refint\POS.dll
+D:\.Net Trainings\POS\POS\POS\obj\Debug\net8.0\POS.pdb
+D:\.Net Trainings\POS\POS\POS\obj\Debug\net8.0\POS.genruntimeconfig.cache
+D:\.Net Trainings\POS\POS\POS\obj\Debug\net8.0\ref\POS.dll
