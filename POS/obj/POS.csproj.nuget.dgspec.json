@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\.Net Trainings\\POS\\POS\\POS\\POS.csproj": {}
+    "D:\\.Net Trainings\\POS\\POS\\POS.csproj": {}
   },
   "projects": {
-    "D:\\.Net Trainings\\POS\\POS\\POS\\POS.csproj": {
+    "D:\\.Net Trainings\\POS\\POS\\POS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\.Net Trainings\\POS\\POS\\POS\\POS.csproj",
+        "projectUniqueName": "D:\\.Net Trainings\\POS\\POS\\POS.csproj",
         "projectName": "POS",
-        "projectPath": "D:\\.Net Trainings\\POS\\POS\\POS\\POS.csproj",
+        "projectPath": "D:\\.Net Trainings\\POS\\POS\\POS.csproj",
         "packagesPath": "C:\\Users\\KabeerAli\\.nuget\\packages\\",
-        "outputPath": "D:\\.Net Trainings\\POS\\POS\\POS\\obj\\",
+        "outputPath": "D:\\.Net Trainings\\POS\\POS\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\KabeerAli\\AppData\\Roaming\\NuGet\\NuGet.Config",

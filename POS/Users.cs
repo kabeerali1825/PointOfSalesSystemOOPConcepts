@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace POS
 {
 
-    public class Users
+    public  class Users
     {
         public string Name { get; private set; }
         public string Email { get; private set; }

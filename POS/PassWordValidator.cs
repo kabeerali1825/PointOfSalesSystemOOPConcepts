@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace POS
 {
-    public class PassWordValidator
+    public class PassWordValidatorHandler
     {
         public bool ValidatePassword(string password)
         {

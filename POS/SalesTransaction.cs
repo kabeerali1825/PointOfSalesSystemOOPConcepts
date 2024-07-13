@@ -9,13 +9,11 @@ namespace POS
     public class SaleItem
     {
         public Product Product { get; set; }
-        public int Quantity { get; set; }
-        public decimal TotalPrice => Product.Price * Quantity;
+        public decimal TotalPrice => Product.Price * Product.Quantity;
 
-        public SaleItem(Product product, int quantity)
+        public SaleItem(Product product)
         {
             Product = product;
-            Quantity = quantity;
         }
     }
 
@@ -23,9 +21,9 @@ namespace POS
     {
         public List<SaleItem> SaleItems { get; private set; } = new List<SaleItem>();
 
-        public void AddProductToSale(Product product, int quantity)
+        public void AddProductToSale(Product product)
         {
-            var saleItem = new SaleItem(product, quantity);
+            var saleItem = new SaleItem(product);
             SaleItems.Add(saleItem);
         }
 
@@ -42,7 +40,7 @@ namespace POS
 
             foreach (var item in SaleItems)
             {
-                receipt.AppendLine($"{item.Product.Name} x {item.Quantity} = {item.TotalPrice:C}");
+                receipt.AppendLine($"{item.Product.Name} x {item.Product.Quantity} = {item.TotalPrice:C}");
             }
 
             receipt.AppendLine("-------------------------------");

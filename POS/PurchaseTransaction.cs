@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace POS
 {
-    public class PurchaseItem
+    public  class PurchaseItem
     {
         public Product Product { get; set; }
         public int Quantity { get; set; }
@@ -18,16 +18,18 @@ namespace POS
             Quantity = quantity;
         }
     }
-    internal class PurchaseTransaction
+    public class PurchaseTransactions
     {
         private ProductManager productManager;
         public List<PurchaseItem> PurchaseItems { get; set; } = new List<PurchaseItem>();
-        PurchaseTransaction(ProductManager productManager)
+
+        // Make the constructor public
+        public PurchaseTransactions(ProductManager productManager)
         {
             this.productManager = productManager;
         }
 
-        public void AddProduct(Product product , int quantity)
+        public void AddProduct(Product product, int quantity)
         {
             var purchaseItem = new PurchaseItem(product, quantity);
             PurchaseItems.Add(purchaseItem);
@@ -54,8 +56,5 @@ namespace POS
 
             return receipt.ToString();
         }
-
-
-
     }
 }

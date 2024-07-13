@@ -40,6 +40,21 @@ namespace POS
             }
             return false;
         }
+        public void ShowInventoryItems()
+        {
+            var productsInventory = productManager.ViewProducts();
+            Console.WriteLine($"Products Count in Inventory: {productsInventory.Count()}");
+
+            var receipt = new StringBuilder();
+            receipt.AppendLine("Products in Inventory Receipt");
+            receipt.AppendLine("-------------------------------");
+
+            foreach (var item in productsInventory)
+            {
+                Console.WriteLine(receipt.AppendLine($"{item.Name} x {item.Quantity} "));
+            }
+
+        }
 
 
     }
