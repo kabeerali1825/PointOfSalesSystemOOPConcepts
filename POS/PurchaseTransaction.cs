@@ -29,13 +29,13 @@ namespace POS
             this.productManager = productManager;
         }
 
-        public void AddProduct(Product product, int quantity)
+        public void AddProductToPurchaseOrder(Product product, int quantity)
         {
             var purchaseItem = new PurchaseItem(product, quantity);
             PurchaseItems.Add(purchaseItem);
         }
 
-        public decimal CalculateTotalAmount()
+        public decimal CalculateTotalPurchaseAmount()
         {
             return PurchaseItems.Sum(item => item.TotalPrice);
         }
@@ -52,7 +52,7 @@ namespace POS
             }
 
             receipt.AppendLine("-------------------------------");
-            receipt.AppendLine($"Total: {CalculateTotalAmount():C}");
+            receipt.AppendLine($"Total: {CalculateTotalPurchaseAmount():C}");
 
             return receipt.ToString();
         }

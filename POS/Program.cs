@@ -33,7 +33,7 @@ class Program
                     {
                         if (userManager.IsAdmin(user))
                         {
-                            AdminMenu(productManager, inventoryManager);
+                            AdminMenu(productManager, inventoryManager,userManager);
                         }
                         else if (userManager.IsCashier(user))
                         {
@@ -174,7 +174,7 @@ class Program
         }
     }
 
-    static void AdminMenu(ProductManager productManager, InventoryManager inventoryManager)
+    static void AdminMenu(ProductManager productManager, InventoryManager inventoryManager, UserManager userManager)
     {
         bool exit = false;
         while (!exit)
@@ -184,13 +184,14 @@ class Program
             Console.WriteLine("***********************************************************************************");
             Console.WriteLine("******************************** ADMIN MENU ***************************************");
             Console.WriteLine("***********************************************************************************");
-            Console.WriteLine("1. Add Product");
-            Console.WriteLine("2. Update Product");
-            Console.WriteLine("3. Remove Product");
-            Console.WriteLine("4. View Inventory");
+            Console.WriteLine("1. Add New Product to the Inventory");
+            Console.WriteLine("2. Update Product Information in Inventory");
+            Console.WriteLine("3. Remove Product From Inventory");
+            Console.WriteLine("4. View Inventory Products");
             Console.WriteLine("5. Receive New Stock");
             Console.WriteLine("6. Reduce Stock ");
-            Console.WriteLine("7. Log Out");
+            Console.WriteLine("7. Change User Role");
+            Console.WriteLine("8. Log Out");
             Console.Write("Select an option: ");
             string option = Console.ReadLine();
 
@@ -215,6 +216,9 @@ class Program
                     ReduceTheStock(inventoryManager);
                     break;
                 case "7":
+                    ChangeUserRole(userManager);
+                    break;
+                case "8":
                     exit = true;
                     break;
                 default:
@@ -223,6 +227,7 @@ class Program
             }
         }
     }
+
 
     static void CashierMenu(ProductManager productManager, PurchaseTransactions purchaseTransactions, SalesTransaction salesTransaction)
     {
@@ -235,8 +240,8 @@ class Program
             Console.WriteLine("******************************* CASHIER MENU **************************************");
             Console.WriteLine("***********************************************************************************");
             Console.WriteLine("1. Add Product to Sale");
-            Console.WriteLine("2. Calculate Total Amount");
-            Console.WriteLine("3. Generate Receipt");
+            Console.WriteLine("2. Calculate Sales Total Amount");
+            Console.WriteLine("3. Generate Receipt for Completed Sales Transactions");
             Console.WriteLine("4. Log Out");
             Console.Write("Select an option: ");
             string option = Console.ReadLine();
@@ -265,11 +270,55 @@ class Program
         }
     }
 
+    static void ChangeUserRole(UserManager userManager)
+    {
+        Console.Clear();
+        Console.WriteLine("***********************************************************************************");
+        Console.WriteLine("******************************* CHANGE USER ROLE **********************************");
+        Console.WriteLine("***********************************************************************************");
+
+        Console.Write("Enter user's email: ");
+        string email = Console.ReadLine();
+
+        Console.WriteLine("Select new role:");
+        Console.WriteLine("1. Admin");
+        Console.WriteLine("2. Cashier");
+        string roleOption = Console.ReadLine();
+        UserRoles newRole;
+
+        switch (roleOption)
+        {
+            case "1":
+                newRole = Roles.Admin;
+                break;
+            case "2":
+                newRole = Roles.Cashier;
+                break;
+            default:
+                PrintErrorMessage("Invalid role selected.");
+                return;
+        }
+
+        if (userManager.ChangeUserRole(email, newRole))
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("User role updated successfully.");
+        }
+        else
+        {
+            PrintErrorMessage("User not found.");
+        }
+
+        Console.ResetColor();
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
+    }
+
     static void AddProduct(ProductManager productManager)
     {
         Console.Clear();
         Console.WriteLine("***********************************************************************************");
-        Console.WriteLine("********************************** ADD PRODUCT ************************************");
+        Console.WriteLine("********************************* ADD PRODUCT INVENTORY****************************");
         Console.WriteLine("***********************************************************************************");
 
         Console.Write("Enter product name: ");

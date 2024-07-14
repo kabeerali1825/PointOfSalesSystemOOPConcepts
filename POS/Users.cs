@@ -52,6 +52,10 @@ namespace POS
         {
             Password = password;
         }
+        public void SetUserRole(UserRoles userRole)
+        {
+            UserRole = userRole;
+        }
 
         public override string ToString()
         {

@@ -75,5 +75,18 @@ namespace POS
             var emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
             return Regex.IsMatch(email, emailPattern);
         }
+
+
+        //User Role Changed
+        public bool ChangeUserRole(string email, UserRoles newRole)
+        {
+            var user = users.FirstOrDefault(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+            if (user != null)
+            {
+                user.SetUserRole(newRole);
+                return true;
+            }
+            return false;
+        }
     }
 }
