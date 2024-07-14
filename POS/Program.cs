@@ -207,7 +207,7 @@ class Program
                     RemoveProduct(productManager);
                     break;
                 case "4":
-                    inventoryManager.ShowInventoryItems();
+                    inventoryManager.TrackInventory();
                     break;
                 case "5":
                     ReceiveNewStock(inventoryManager);
@@ -242,7 +242,10 @@ class Program
             Console.WriteLine("1. Add Product to Sale");
             Console.WriteLine("2. Calculate Sales Total Amount");
             Console.WriteLine("3. Generate Receipt for Completed Sales Transactions");
-            Console.WriteLine("4. Log Out");
+            Console.WriteLine("4. Add Product to Purchase Order");
+            Console.WriteLine("5. Calculate Purchase Total Amount");
+            Console.WriteLine("6. Generate Purchase Receipt");
+            Console.WriteLine("7. Log Out");
             Console.Write("Select an option: ");
             string option = Console.ReadLine();
 
@@ -258,12 +261,22 @@ class Program
                     Console.WriteLine(salesTransaction.GenerateSalesTransactionsReceipt());
                     break;
                 case "4":
+                    AddProductToPurchase(productManager, purchaseTransactions);
+                    break;
+                case "5":
+                    Console.WriteLine($"Total Amount: {purchaseTransactions.CalculateTotalPurchaseAmount():C}");
+                    break;
+                case "6":
+                    Console.WriteLine(purchaseTransactions.GeneratePurchaseReceipt());
+                    break;
+                case "7":
                     exit = true;
                     break;
                 default:
                     PrintErrorMessage("Invalid option. Please try again.");
                     break;
             }
+
 
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
@@ -470,6 +483,36 @@ class Program
             PrintErrorMessage("Product not found.");
         }
 
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
+    }
+
+    static void AddProductToPurchase(ProductManager productManager, PurchaseTransactions purchaseTransactions)
+    {
+        Console.Clear();
+        Console.WriteLine("***********************************************************************************");
+        Console.WriteLine("***************************** ADD PRODUCT TO PURCHASE *****************************");
+        Console.WriteLine("***********************************************************************************");
+
+        Console.Write("Enter product name: ");
+        string name = Console.ReadLine();
+        Console.Write("Enter quantity: ");
+        int quantity = int.Parse(Console.ReadLine());
+
+        var product = productManager.FindProductByName(name);
+
+        if (product != null)
+        {
+            purchaseTransactions.AddProductToPurchaseOrder(product, quantity);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Product added to purchase order successfully.");
+        }
+        else
+        {
+            PrintErrorMessage("Product not found.");
+        }
+
+        Console.ResetColor();
         Console.WriteLine("Press any key to continue...");
         Console.ReadKey();
     }

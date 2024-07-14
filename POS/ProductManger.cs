@@ -49,5 +49,11 @@ namespace POS
             }
             return false;
         }
+
+        public Product FindProductByName(string name)
+        {
+            var product = products.FirstOrDefault(p => p.Name == name);
+            return product;
+        }
     }
 }
