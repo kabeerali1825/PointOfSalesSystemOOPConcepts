@@ -467,70 +467,106 @@ class Program
 
     static void AddProductToSale(ProductManager productManager, SalesTransaction salesTransaction)
     {
-        Console.Clear();
-        Console.WriteLine("***********************************************************************************");
-        Console.WriteLine("******************************* ADD PRODUCT TO SALE *******************************");
-        Console.WriteLine("***********************************************************************************");
-        Console.WriteLine("Available Products:");
-        productManager.DisplayInventoryTable(productManager);
-        Console.Write("Enter product ID to add to sale: ");
-        int id = int.Parse(Console.ReadLine());
-        var product = productManager.ViewProducts().FirstOrDefault(p => p.Id==id);
-        if (product != null)
+        try
         {
-            Console.Write("Enter quantity: ");
-            int quantity = int.Parse(Console.ReadLine());
-            if (quantity <= product.Quantity)
+            Console.Clear();
+            Console.WriteLine("***********************************************************************************");
+            Console.WriteLine("******************************* ADD PRODUCT TO SALE *******************************");
+            Console.WriteLine("***********************************************************************************");
+            Console.WriteLine("Available Products:");
+            productManager.DisplayInventoryTable(productManager);
+
+            Console.Write("Enter product ID to add to sale: ");
+            int id = int.Parse(Console.ReadLine());
+
+            var product = productManager.ViewProducts().FirstOrDefault(p => p.Id == id);
+
+            if (product != null)
             {
-                salesTransaction.AddProductToSale(new Product(id,product.Name, product.Price, quantity, product.Type, product.Category));
-                product.Quantity -= quantity;
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Product added to sale.");
-                Console.ResetColor();
+                Console.Write("Enter quantity: ");
+                int quantity = int.Parse(Console.ReadLine());
+
+                if (quantity <= product.Quantity)
+                {
+                    salesTransaction.AddProductToSale(new Product(id, product.Name, product.Price, quantity, product.Type, product.Category));
+                    product.Quantity -= quantity;
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Product added to sale.");
+                }
+                else
+                {
+                    PrintErrorMessage("Insufficient quantity in stock.");
+                }
             }
             else
             {
-                PrintErrorMessage("Insufficient quantity in stock.");
+                PrintErrorMessage("Product not found.");
             }
         }
-        else
+        catch (FormatException)
         {
-            PrintErrorMessage("Product not found.");
+            PrintErrorMessage("Invalid input. Please enter a valid number.");
         }
-
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadKey();
+        catch (Exception ex)
+        {
+            PrintErrorMessage($"An error occurred: {ex.Message}");
+        }
+        finally
+        {
+            Console.ResetColor();
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
     }
 
     static void AddProductToPurchase(ProductManager productManager, PurchaseTransactions purchaseTransactions)
     {
-        Console.Clear();
-        Console.WriteLine("***********************************************************************************");
-        Console.WriteLine("***************************** ADD PRODUCT TO PURCHASE *****************************");
-        Console.WriteLine("***********************************************************************************");
-        Console.WriteLine("Available Products:");
-        productManager.DisplayInventoryTable(productManager);
-        Console.Write("Enter product ID: ");
-        int id = int.Parse(Console.ReadLine());
-        Console.Write("Enter quantity: ");
-        int quantity = int.Parse(Console.ReadLine());
-
-        var product = productManager.FindProductByID(id);
-        if (quantity <= product.Quantity && product != null)
+        try
         {
-            purchaseTransactions.AddProductToPurchaseOrder(new Product(id, product.Name, product.Price, quantity, 
-                product.Type, product.Category),quantity);
-            product.Quantity -= quantity;
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Product added to purchase order successfully.");
-        }
-        else
-        {
-            PrintErrorMessage("Product not found with Mentioned Quantity.");
-        }
+            Console.Clear();
+            Console.WriteLine("***********************************************************************************");
+            Console.WriteLine("***************************** ADD PRODUCT TO PURCHASE *****************************");
+            Console.WriteLine("***********************************************************************************");
+            Console.WriteLine("Available Products:");
+            productManager.DisplayInventoryTable(productManager);
 
-        Console.ResetColor();
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadKey();
+            Console.Write("Enter product ID: ");
+            int id = int.Parse(Console.ReadLine());
+
+            Console.Write("Enter quantity: ");
+            int quantity = int.Parse(Console.ReadLine());
+
+            var product = productManager.FindProductByID(id);
+
+            if (product != null && quantity <= product.Quantity)
+            {
+                purchaseTransactions.AddProductToPurchaseOrder(new Product(id, product.Name, product.Price, quantity,
+                    product.Type, product.Category), quantity);
+                product.Quantity -= quantity;
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Product added to purchase order successfully.");
+            }
+            else
+            {
+                PrintErrorMessage("Product not found or insufficient quantity.");
+            }
+        }
+        catch (FormatException)
+        {
+            PrintErrorMessage("Invalid input. Please enter a valid number.");
+        }
+        catch (Exception ex)
+        {
+            PrintErrorMessage($"An error occurred: {ex.Message}");
+        }
+        finally
+        {
+            Console.ResetColor();
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
     }
+
 }
