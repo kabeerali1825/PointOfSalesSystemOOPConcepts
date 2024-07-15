@@ -207,7 +207,7 @@ class Program
                     RemoveProduct(productManager);
                     break;
                 case "4":
-                    inventoryManager.TrackInventory();
+                    inventoryManager.ShowInventoryItems();
                     break;
                 case "5":
                     ReceiveNewStock(inventoryManager);

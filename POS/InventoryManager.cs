@@ -21,6 +21,7 @@ namespace POS
             {
                 Console.WriteLine($"{product.Name} - Quantity: {product.Quantity}");
             }
+            Console.ReadKey();
         }
         public void ReceiveNewStock(string productName, int quantity)
         {
@@ -51,8 +52,9 @@ namespace POS
 
             foreach (var item in productsInventory)
             {
-                Console.WriteLine(receipt.AppendLine($"{item.Name} x {item.Quantity} "));
+                Console.WriteLine(receipt.AppendLine($"{item.Name} :  {item.Quantity} "));
             }
+            Console.ReadKey();
 
         }
 
