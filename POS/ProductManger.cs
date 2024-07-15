@@ -63,5 +63,26 @@ namespace POS
             var product = products.FirstOrDefault(p => p.Id == id);
             return product;
         }
+
+        //Display As Table Form
+        public void DisplayInventoryTable(ProductManager productManager)
+        {
+            var products = productManager.ViewProducts();
+            Console.WriteLine($"Product Count: {products.Count()}");
+
+            // Print the table header
+            Console.WriteLine("-------------------------------------------------------------------------------");
+            Console.WriteLine("| {0, -5} | {1, -20} | {2, -10} | {3, -15} | {4, -10} | {5, -10} |", "ID", "Name", "Price", "Category", "Quantity", "Type");
+            Console.WriteLine("-------------------------------------------------------------------------------");
+
+            // Print the table rows
+            foreach (var item in products)
+            {
+                Console.WriteLine("| {0, -5} | {1, -20} | {2, -10:C} | {3, -15} | {4, -10} | {5, -10} |", item.Id, item.Name, item.Price, item.Category, item.Quantity, item.Type);
+            }
+
+            Console.WriteLine("-------------------------------------------------------------------------------");
+        }
+
     }
 }

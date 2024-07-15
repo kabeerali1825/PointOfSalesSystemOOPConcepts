@@ -326,7 +326,7 @@ class Program
         Console.WriteLine("Press any key to continue...");
         Console.ReadKey();
     }
-
+    
     static void AddProduct(ProductManager productManager)
     {
         Console.Clear();
@@ -335,12 +335,7 @@ class Program
         Console.WriteLine("***********************************************************************************");
         Console.WriteLine();
         Console.WriteLine("Available Products to Add In Inventory:");
-        var products = productManager.ViewProducts();
-        Console.WriteLine($"Product Count: {products.Count()}");
-        foreach (var item in products)
-        {
-            Console.WriteLine($" {item.Id} ,{item.Name} , {item.Price},{item.Category} :  {item.Quantity} ");
-        }
+        productManager.DisplayInventoryTable(productManager);
         Console.WriteLine();
         Console.Write("Enter product ID: ");
         int id = int.Parse(Console.ReadLine());
@@ -371,12 +366,7 @@ class Program
         Console.WriteLine("***********************************************************************************");
         Console.WriteLine();
         Console.WriteLine("Available Products:");
-        var products = productManager.ViewProducts();
-        Console.WriteLine($"Product Count: {products.Count()}");
-        foreach (var item in products)
-        {
-            Console.WriteLine($" {item.Id} ,{item.Name} , {item.Price},{item.Category} :  {item.Quantity} ");
-        }
+        productManager.DisplayInventoryTable(productManager);
         Console.Write("Enter product ID: ");
         int id = int.Parse(Console.ReadLine());
         Console.Write("Enter product name to update: ");
@@ -415,12 +405,7 @@ class Program
         Console.WriteLine("***********************************************************************************");
         Console.WriteLine();
         Console.WriteLine("Available Products:");
-        var products = productManager.ViewProducts();
-        Console.WriteLine($"Product Count: {products.Count()}");
-        foreach (var item in products)
-        {
-            Console.WriteLine($" {item.Id} ,{item.Name} , {item.Price},{item.Category} :  {item.Quantity} ");
-        }
+        productManager.DisplayInventoryTable(productManager);
         Console.Write("Enter product ID to Remove: ");
         int id = int.Parse(Console.ReadLine());
         if (productManager.RemoveProduct(id))
@@ -445,12 +430,7 @@ class Program
         Console.WriteLine("****************************** RECEIVE NEW STOCK **********************************");
         Console.WriteLine("***********************************************************************************");
         Console.WriteLine("Available Products:");
-        var products = productManager.ViewProducts();
-        Console.WriteLine($"Product Count: {products.Count()}");
-        foreach (var item in products)
-        {
-            Console.WriteLine($" {item.Id} ,{item.Name} , {item.Price},{item.Category} :  {item.Quantity} ");
-        }
+        productManager.DisplayInventoryTable(productManager);
         Console.Write("Enter product ID to ADD new Stock: ");
         int id = int.Parse(Console.ReadLine());
         Console.Write("Enter quantity to add: ");
@@ -471,12 +451,7 @@ class Program
         Console.WriteLine("****************************** REDUCE THE STOCK **********************************");
         Console.WriteLine("***********************************************************************************");
         Console.WriteLine("Available Products:");
-        var products = productManager.ViewProducts();
-        Console.WriteLine($"Product Count: {products.Count()}");
-        foreach (var item in products)
-        {
-            Console.WriteLine($" {item.Id} ,{item.Name} , {item.Price},{item.Category} :  {item.Quantity} ");
-        }
+        productManager.DisplayInventoryTable(productManager);
         Console.Write("Enter product ID to Reduce The Stock: ");
         int id = int.Parse(Console.ReadLine());
         Console.Write("Enter quantity to Reduce from Stock: ");
@@ -497,12 +472,7 @@ class Program
         Console.WriteLine("******************************* ADD PRODUCT TO SALE *******************************");
         Console.WriteLine("***********************************************************************************");
         Console.WriteLine("Available Products:");
-        var products = productManager.ViewProducts();
-        Console.WriteLine($"Product Count: {products.Count()}");
-        foreach (var item in products)
-        {
-            Console.WriteLine($" {item.Id} ,{item.Name} , {item.Price},{item.Category} :  {item.Quantity} ");
-        }
+        productManager.DisplayInventoryTable(productManager);
         Console.Write("Enter product ID to add to sale: ");
         int id = int.Parse(Console.ReadLine());
         var product = productManager.ViewProducts().FirstOrDefault(p => p.Id==id);
@@ -539,28 +509,24 @@ class Program
         Console.WriteLine("***************************** ADD PRODUCT TO PURCHASE *****************************");
         Console.WriteLine("***********************************************************************************");
         Console.WriteLine("Available Products:");
-        var products = productManager.ViewProducts();
-        Console.WriteLine($"Product Count: {products.Count()}");
-        foreach (var item in products)
-        {
-            Console.WriteLine($" {item.Id} ,{item.Name} , {item.Price},{item.Category} :  {item.Quantity} ");
-        }
+        productManager.DisplayInventoryTable(productManager);
         Console.Write("Enter product ID: ");
         int id = int.Parse(Console.ReadLine());
         Console.Write("Enter quantity: ");
         int quantity = int.Parse(Console.ReadLine());
 
         var product = productManager.FindProductByID(id);
-
-        if (product != null)
+        if (quantity <= product.Quantity && product != null)
         {
-            purchaseTransactions.AddProductToPurchaseOrder(product, quantity);
+            purchaseTransactions.AddProductToPurchaseOrder(new Product(id, product.Name, product.Price, quantity, 
+                product.Type, product.Category),quantity);
+            product.Quantity -= quantity;
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Product added to purchase order successfully.");
         }
         else
         {
-            PrintErrorMessage("Product not found.");
+            PrintErrorMessage("Product not found with Mentioned Quantity.");
         }
 
         Console.ResetColor();

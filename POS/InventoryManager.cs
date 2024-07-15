@@ -19,11 +19,7 @@ namespace POS
         {
             var products = productManager.ViewProducts();
             Console.WriteLine("Current Inventory of Products:");
-            Console.WriteLine($"Product Count: {products.Count()}");
-            foreach (var item in products)
-            {
-                Console.WriteLine($" {item.Id} ,{item.Name} , {item.Price}, {item.Category} : {item.Quantity} ");
-            }
+            productManager.DisplayInventoryTable(productManager);
             Console.ReadKey();
         }
 
