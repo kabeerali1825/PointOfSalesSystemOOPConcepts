@@ -9,6 +9,7 @@ namespace POS
 {
     public class PassWordValidatorHandler
     {
+        //Validate Passwords
         public bool ValidatePassword(string password)
         {
             if (password == null) throw new NullReferenceException();

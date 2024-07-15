@@ -8,7 +8,7 @@ namespace POS
 {
     internal class Category
     {
-        private readonly int id;
+        private readonly int iD;
         private readonly string name;
 
         public Category(string name)

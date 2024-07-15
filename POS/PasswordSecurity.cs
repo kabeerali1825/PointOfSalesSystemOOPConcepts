@@ -9,7 +9,7 @@ namespace POS
 {
     internal class PasswordSecurityHandler
     {
-        //AES ALGOIRTHM For Excyption and Decryption of Password
+        //AES ALGOIRTHM For Excyption and Decryption of Password of Users
         public string EncryptPassword(string key, string password)
         {
             byte[] iv = new byte[16];
