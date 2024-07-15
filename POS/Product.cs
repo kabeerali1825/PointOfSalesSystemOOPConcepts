@@ -8,14 +8,16 @@ namespace POS
 {
     public class Product
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
         public int Quantity { get; set; }
         public string Type { get; set; }
         public string Category { get; set; }
 
-        public Product(string name, decimal price, int quantity, string type, string category)
+        public Product(int id ,string name, decimal price, int quantity, string type, string category)
         {
+            Id = id;
             Name = name;
             Price = price;
             Quantity = quantity;
@@ -25,7 +27,7 @@ namespace POS
 
         public override string ToString()
         {
-            return $"Name: {Name}, Price: {Price}, Quantity: {Quantity}, Type: {Type}, Category: {Category}";
+            return $"Product ID: {Id}, Name: {Name}, Price: {Price}, Quantity: {Quantity}, Type: {Type}, Category: {Category}";
         }
     }
 

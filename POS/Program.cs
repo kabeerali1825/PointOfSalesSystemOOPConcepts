@@ -99,17 +99,17 @@ class Program
         try
         {
             Console.Write("Enter Your name: ");
-            string name = Console.ReadLine();
+            string? name = Console.ReadLine();
             Console.Write("Enter Your email: ");
-            string email = Console.ReadLine();
+            string? email = Console.ReadLine();
             Console.Write("Enter Your password: ");
-            string password = Console.ReadLine();
+            string? password = Console.ReadLine();
 
             Console.WriteLine("Select role:");
             Console.WriteLine("1. Admin");
             Console.WriteLine("2. Cashier");
-            string roleOption = Console.ReadLine();
-            UserRoles role = null;
+            string? roleOption = Console.ReadLine();
+            UserRoles role = new UserRoles();
 
             switch (roleOption)
             {
@@ -148,9 +148,9 @@ class Program
         try
         {
             Console.Write("Enter email: ");
-            string email = Console.ReadLine();
+            string? email = Console.ReadLine();
             Console.Write("Enter password: ");
-            string password = Console.ReadLine();
+            string? password = Console.ReadLine();
 
             var user = userManager.LogInUserAuthentication(email, password);
 
@@ -193,7 +193,7 @@ class Program
             Console.WriteLine("7. Change User Role");
             Console.WriteLine("8. Log Out");
             Console.Write("Select an option: ");
-            string option = Console.ReadLine();
+            string? option = Console.ReadLine();
 
             switch (option)
             {
@@ -207,13 +207,13 @@ class Program
                     RemoveProduct(productManager);
                     break;
                 case "4":
-                    inventoryManager.ShowInventoryItems();
+                    inventoryManager.TrackInventory();
                     break;
                 case "5":
-                    ReceiveNewStock(inventoryManager);
+                    ReceiveNewStock(inventoryManager,productManager);
                     break;
                 case "6":
-                    ReduceTheStock(inventoryManager);
+                    ReduceTheStock(inventoryManager, productManager);
                     break;
                 case "7":
                     ChangeUserRole(userManager);
@@ -247,7 +247,7 @@ class Program
             Console.WriteLine("6. Generate Purchase Receipt");
             Console.WriteLine("7. Log Out");
             Console.Write("Select an option: ");
-            string option = Console.ReadLine();
+            string? option = Console.ReadLine();
 
             switch (option)
             {
@@ -291,12 +291,12 @@ class Program
         Console.WriteLine("***********************************************************************************");
 
         Console.Write("Enter user's email: ");
-        string email = Console.ReadLine();
+        string? email = Console.ReadLine();
 
         Console.WriteLine("Select new role:");
         Console.WriteLine("1. Admin");
         Console.WriteLine("2. Cashier");
-        string roleOption = Console.ReadLine();
+        string? roleOption = Console.ReadLine();
         UserRoles newRole;
 
         switch (roleOption)
@@ -333,19 +333,29 @@ class Program
         Console.WriteLine("***********************************************************************************");
         Console.WriteLine("********************************* ADD PRODUCT INVENTORY****************************");
         Console.WriteLine("***********************************************************************************");
-
+        Console.WriteLine();
+        Console.WriteLine("Available Products to Add In Inventory:");
+        var products = productManager.ViewProducts();
+        Console.WriteLine($"Product Count: {products.Count()}");
+        foreach (var item in products)
+        {
+            Console.WriteLine($" {item.Id} ,{item.Name} , {item.Price},{item.Category} :  {item.Quantity} ");
+        }
+        Console.WriteLine();
+        Console.Write("Enter product ID: ");
+        int id = int.Parse(Console.ReadLine());
         Console.Write("Enter product name: ");
-        string name = Console.ReadLine();
+        string? name = Console.ReadLine();
         Console.Write("Enter product price: ");
         decimal price = decimal.Parse(Console.ReadLine());
         Console.Write("Enter product quantity: ");
         int quantity = int.Parse(Console.ReadLine());
         Console.Write("Enter product type: ");
-        string type = Console.ReadLine();
+        string? type = Console.ReadLine();
         Console.Write("Enter product category: ");
-        string category = Console.ReadLine();
+        string? category = Console.ReadLine();
 
-        productManager.AddProduct(name, price, quantity, type, category);
+        productManager.AddProduct(id,name, price, quantity, type, category);
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("Product added successfully.");
         Console.ResetColor();
@@ -359,21 +369,30 @@ class Program
         Console.WriteLine("***********************************************************************************");
         Console.WriteLine("******************************* UPDATE PRODUCT ************************************");
         Console.WriteLine("***********************************************************************************");
-
+        Console.WriteLine();
+        Console.WriteLine("Available Products:");
+        var products = productManager.ViewProducts();
+        Console.WriteLine($"Product Count: {products.Count()}");
+        foreach (var item in products)
+        {
+            Console.WriteLine($" {item.Id} ,{item.Name} , {item.Price},{item.Category} :  {item.Quantity} ");
+        }
+        Console.Write("Enter product ID: ");
+        int id = int.Parse(Console.ReadLine());
         Console.Write("Enter product name to update: ");
-        string name = Console.ReadLine();
+        string? name = Console.ReadLine();
         Console.Write("Enter new price (or leave blank to keep current): ");
-        string priceInput = Console.ReadLine();
+        string? priceInput = Console.ReadLine();
         decimal? price = string.IsNullOrEmpty(priceInput) ? (decimal?)null : decimal.Parse(priceInput);
         Console.Write("Enter new quantity (or leave blank to keep current): ");
-        string quantityInput = Console.ReadLine();
+        string? quantityInput = Console.ReadLine();
         int? quantity = string.IsNullOrEmpty(quantityInput) ? (int?)null : int.Parse(quantityInput);
         Console.Write("Enter new type (or leave blank to keep current): ");
-        string type = Console.ReadLine();
+        string? type = Console.ReadLine();
         Console.Write("Enter new category (or leave blank to keep current): ");
-        string category = Console.ReadLine();
+        string? category = Console.ReadLine();
 
-        if (productManager.UpdateProduct(name, price, quantity, type, category))
+        if (productManager.UpdateProduct(id,name, price, quantity, type, category))
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Product updated successfully.");
@@ -394,10 +413,17 @@ class Program
         Console.WriteLine("***********************************************************************************");
         Console.WriteLine("******************************* REMOVE PRODUCT ************************************");
         Console.WriteLine("***********************************************************************************");
-
-        Console.Write("Enter product name to remove: ");
-        string name = Console.ReadLine();
-        if (productManager.RemoveProduct(name))
+        Console.WriteLine();
+        Console.WriteLine("Available Products:");
+        var products = productManager.ViewProducts();
+        Console.WriteLine($"Product Count: {products.Count()}");
+        foreach (var item in products)
+        {
+            Console.WriteLine($" {item.Id} ,{item.Name} , {item.Price},{item.Category} :  {item.Quantity} ");
+        }
+        Console.Write("Enter product ID to Remove: ");
+        int id = int.Parse(Console.ReadLine());
+        if (productManager.RemoveProduct(id))
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Product removed successfully.");
@@ -412,38 +438,51 @@ class Program
         Console.ReadKey();
     }
 
-    static void ReceiveNewStock(InventoryManager inventoryManager)
+    static void ReceiveNewStock(InventoryManager inventoryManager, ProductManager productManager)
     {
         Console.Clear();
         Console.WriteLine("***********************************************************************************");
         Console.WriteLine("****************************** RECEIVE NEW STOCK **********************************");
         Console.WriteLine("***********************************************************************************");
-
-        Console.Write("Enter product name: ");
-        string productName = Console.ReadLine();
+        Console.WriteLine("Available Products:");
+        var products = productManager.ViewProducts();
+        Console.WriteLine($"Product Count: {products.Count()}");
+        foreach (var item in products)
+        {
+            Console.WriteLine($" {item.Id} ,{item.Name} , {item.Price},{item.Category} :  {item.Quantity} ");
+        }
+        Console.Write("Enter product ID to ADD new Stock: ");
+        int id = int.Parse(Console.ReadLine());
         Console.Write("Enter quantity to add: ");
         int quantity = int.Parse(Console.ReadLine());
 
-        inventoryManager.ReceiveNewStock(productName, quantity);
+        bool flag= inventoryManager.ReceiveNewStock(id, quantity);
+        Console.WriteLine(flag);
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("Stock updated successfully.");
         Console.ResetColor();
         Console.WriteLine("Press any key to continue...");
         Console.ReadKey();
     }
-    static void ReduceTheStock(InventoryManager inventoryManager)
+    static void ReduceTheStock(InventoryManager inventoryManager, ProductManager productManager)
     {
         Console.Clear();
         Console.WriteLine("***********************************************************************************");
         Console.WriteLine("****************************** REDUCE THE STOCK **********************************");
         Console.WriteLine("***********************************************************************************");
-
-        Console.Write("Enter product name: ");
-        string productName = Console.ReadLine();
+        Console.WriteLine("Available Products:");
+        var products = productManager.ViewProducts();
+        Console.WriteLine($"Product Count: {products.Count()}");
+        foreach (var item in products)
+        {
+            Console.WriteLine($" {item.Id} ,{item.Name} , {item.Price},{item.Category} :  {item.Quantity} ");
+        }
+        Console.Write("Enter product ID to Reduce The Stock: ");
+        int id = int.Parse(Console.ReadLine());
         Console.Write("Enter quantity to Reduce from Stock: ");
         int quantity = int.Parse(Console.ReadLine());
 
-        inventoryManager.ReduceStock(productName, quantity);
+        inventoryManager.ReduceStock(id, quantity);
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("Stock updated successfully.");
         Console.ResetColor();
@@ -457,17 +496,23 @@ class Program
         Console.WriteLine("***********************************************************************************");
         Console.WriteLine("******************************* ADD PRODUCT TO SALE *******************************");
         Console.WriteLine("***********************************************************************************");
-
-        Console.Write("Enter product name to add to sale: ");
-        string name = Console.ReadLine();
-        var product = productManager.ViewProducts().FirstOrDefault(p => p.Name == name);
+        Console.WriteLine("Available Products:");
+        var products = productManager.ViewProducts();
+        Console.WriteLine($"Product Count: {products.Count()}");
+        foreach (var item in products)
+        {
+            Console.WriteLine($" {item.Id} ,{item.Name} , {item.Price},{item.Category} :  {item.Quantity} ");
+        }
+        Console.Write("Enter product ID to add to sale: ");
+        int id = int.Parse(Console.ReadLine());
+        var product = productManager.ViewProducts().FirstOrDefault(p => p.Id==id);
         if (product != null)
         {
             Console.Write("Enter quantity: ");
             int quantity = int.Parse(Console.ReadLine());
             if (quantity <= product.Quantity)
             {
-                salesTransaction.AddProductToSale(new Product(name, product.Price, quantity, product.Type, product.Category));
+                salesTransaction.AddProductToSale(new Product(id,product.Name, product.Price, quantity, product.Type, product.Category));
                 product.Quantity -= quantity;
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Product added to sale.");
@@ -493,13 +538,19 @@ class Program
         Console.WriteLine("***********************************************************************************");
         Console.WriteLine("***************************** ADD PRODUCT TO PURCHASE *****************************");
         Console.WriteLine("***********************************************************************************");
-
-        Console.Write("Enter product name: ");
-        string name = Console.ReadLine();
+        Console.WriteLine("Available Products:");
+        var products = productManager.ViewProducts();
+        Console.WriteLine($"Product Count: {products.Count()}");
+        foreach (var item in products)
+        {
+            Console.WriteLine($" {item.Id} ,{item.Name} , {item.Price},{item.Category} :  {item.Quantity} ");
+        }
+        Console.Write("Enter product ID: ");
+        int id = int.Parse(Console.ReadLine());
         Console.Write("Enter quantity: ");
         int quantity = int.Parse(Console.ReadLine());
 
-        var product = productManager.FindProductByName(name);
+        var product = productManager.FindProductByID(id);
 
         if (product != null)
         {

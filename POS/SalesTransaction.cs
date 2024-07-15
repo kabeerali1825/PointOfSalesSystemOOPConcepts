@@ -40,7 +40,7 @@ namespace POS
 
             foreach (var item in SaleItems)
             {
-                receipt.AppendLine($"{item.Product.Name} x {item.Product.Quantity} = {item.TotalPrice:C}");
+                receipt.AppendLine($"{item.Product.Id}: {item.Product.Name} x {item.Product.Quantity} = {item.TotalPrice:C}");
             }
 
             receipt.AppendLine("-------------------------------");
