@@ -20,7 +20,7 @@ class Program
         while (!exit)
         {
             PrintMainMenu();
-            string option = Console.ReadLine();
+            string? option = Console.ReadLine();
 
             switch (option)
             {
@@ -399,71 +399,149 @@ class Program
 
     static void RemoveProduct(ProductManager productManager)
     {
-        Console.Clear();
-        Console.WriteLine("***********************************************************************************");
-        Console.WriteLine("******************************* REMOVE PRODUCT ************************************");
-        Console.WriteLine("***********************************************************************************");
-        Console.WriteLine();
-        Console.WriteLine("Available Products:");
-        productManager.DisplayInventoryTable(productManager);
-        Console.Write("Enter product ID to Remove: ");
-        int id = int.Parse(Console.ReadLine());
-        if (productManager.RemoveProduct(id))
+        try
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Product removed successfully.");
-            Console.ResetColor();
-        }
-        else
-        {
-            PrintErrorMessage("Product not found.");
-        }
+            Console.Clear();
+            Console.WriteLine("***********************************************************************************");
+            Console.WriteLine("******************************* REMOVE PRODUCT ************************************");
+            Console.WriteLine("***********************************************************************************");
+            Console.WriteLine();
+            Console.WriteLine("Available Products:");
+            productManager.DisplayInventoryTable(productManager);
 
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadKey();
+            Console.Write("Enter product ID to remove: ");
+            string? inputId = Console.ReadLine();
+            if (!int.TryParse(inputId, out int id))
+            {
+                PrintErrorMessage("Invalid input for product ID. Please enter a valid number.");
+                return;
+            }
+
+            if (productManager.RemoveProduct(id))
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Product removed successfully.");
+            }
+            else
+            {
+                PrintErrorMessage("Product not found.");
+            }
+        }
+        catch (Exception ex)
+        {
+            PrintErrorMessage($"An error occurred: {ex.Message}");
+        }
+        finally
+        {
+            Console.ResetColor();
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
     }
+
+
 
     static void ReceiveNewStock(InventoryManager inventoryManager, ProductManager productManager)
     {
-        Console.Clear();
-        Console.WriteLine("***********************************************************************************");
-        Console.WriteLine("****************************** RECEIVE NEW STOCK **********************************");
-        Console.WriteLine("***********************************************************************************");
-        Console.WriteLine("Available Products:");
-        productManager.DisplayInventoryTable(productManager);
-        Console.Write("Enter product ID to ADD new Stock: ");
-        int id = int.Parse(Console.ReadLine());
-        Console.Write("Enter quantity to add: ");
-        int quantity = int.Parse(Console.ReadLine());
+        try
+        {
+            Console.Clear();
+            Console.WriteLine("***********************************************************************************");
+            Console.WriteLine("****************************** RECEIVE NEW STOCK **********************************");
+            Console.WriteLine("***********************************************************************************");
+            Console.WriteLine("Available Products:");
+            productManager.DisplayInventoryTable(productManager);
 
-        bool flag= inventoryManager.ReceiveNewStock(id, quantity);
-        Console.WriteLine(flag);
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("Stock updated successfully.");
-        Console.ResetColor();
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadKey();
+            Console.Write("Enter product ID to add new stock: ");
+            string? inputId = Console.ReadLine();
+            if (!int.TryParse(inputId, out int id))
+            {
+                PrintErrorMessage("Invalid input for product ID. Please enter a valid number.");
+                return;
+            }
+
+            Console.Write("Enter quantity to add: ");
+            string? inputQuantity = Console.ReadLine();
+            if (!int.TryParse(inputQuantity, out int quantity))
+            {
+                PrintErrorMessage("Invalid input for quantity. Please enter a valid number.");
+                return;
+            }
+
+            bool flag = inventoryManager.ReceiveNewStock(id, quantity);
+            if (flag)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Stock updated successfully.");
+            }
+            else
+            {
+                PrintErrorMessage("Failed to update stock. Product not found.");
+            }
+        }
+        catch (Exception ex)
+        {
+            PrintErrorMessage($"An error occurred: {ex.Message}");
+        }
+        finally
+        {
+            Console.ResetColor();
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
     }
+
     static void ReduceTheStock(InventoryManager inventoryManager, ProductManager productManager)
     {
-        Console.Clear();
-        Console.WriteLine("***********************************************************************************");
-        Console.WriteLine("****************************** REDUCE THE STOCK **********************************");
-        Console.WriteLine("***********************************************************************************");
-        Console.WriteLine("Available Products:");
-        productManager.DisplayInventoryTable(productManager);
-        Console.Write("Enter product ID to Reduce The Stock: ");
-        int id = int.Parse(Console.ReadLine());
-        Console.Write("Enter quantity to Reduce from Stock: ");
-        int quantity = int.Parse(Console.ReadLine());
+        try
+        {
+            Console.Clear();
+            Console.WriteLine("***********************************************************************************");
+            Console.WriteLine("****************************** REDUCE THE STOCK **********************************");
+            Console.WriteLine("***********************************************************************************");
+            Console.WriteLine("Available Products:");
+            productManager.DisplayInventoryTable(productManager);
 
-        inventoryManager.ReduceStock(id, quantity);
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("Stock updated successfully.");
-        Console.ResetColor();
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadKey();
+            Console.Write("Enter product ID to reduce the stock: ");
+            string? inputId = Console.ReadLine();
+            if (!int.TryParse(inputId, out int id))
+            {
+                PrintErrorMessage("Invalid input for product ID. Please enter a valid number.");
+                return;
+            }
+
+            Console.Write("Enter quantity to reduce from stock: ");
+            string? inputQuantity = Console.ReadLine();
+            if (!int.TryParse(inputQuantity, out int quantity))
+            {
+                PrintErrorMessage("Invalid input for quantity. Please enter a valid number.");
+                return;
+            }
+
+            bool stockReduced = inventoryManager.ReduceStock(id, quantity);
+            if (stockReduced)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Stock updated successfully.");
+            }
+            else
+            {
+                PrintErrorMessage("Failed to update stock. Either product not found or insufficient quantity.");
+            }
+        }
+        catch (Exception ex)
+        {
+            PrintErrorMessage($"An error occurred: {ex.Message}");
+        }
+        finally
+        {
+            Console.ResetColor();
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
     }
+
+
 
     static void AddProductToSale(ProductManager productManager, SalesTransaction salesTransaction)
     {
@@ -477,14 +555,23 @@ class Program
             productManager.DisplayInventoryTable(productManager);
 
             Console.Write("Enter product ID to add to sale: ");
-            int id = int.Parse(Console.ReadLine());
+            string? inputId = Console.ReadLine();
+            if (!int.TryParse(inputId, out int id))
+            {
+                PrintErrorMessage("Invalid input for product ID. Please enter a valid number.");
+                return;
+            }
 
             var product = productManager.ViewProducts().FirstOrDefault(p => p.Id == id);
-
             if (product != null)
             {
                 Console.Write("Enter quantity: ");
-                int quantity = int.Parse(Console.ReadLine());
+                string? inputQuantity = Console.ReadLine();
+                if (!int.TryParse(inputQuantity, out int quantity))
+                {
+                    PrintErrorMessage("Invalid input for quantity. Please enter a valid number.");
+                    return;
+                }
 
                 if (quantity <= product.Quantity)
                 {
@@ -504,10 +591,6 @@ class Program
                 PrintErrorMessage("Product not found.");
             }
         }
-        catch (FormatException)
-        {
-            PrintErrorMessage("Invalid input. Please enter a valid number.");
-        }
         catch (Exception ex)
         {
             PrintErrorMessage($"An error occurred: {ex.Message}");
@@ -519,6 +602,7 @@ class Program
             Console.ReadKey();
         }
     }
+
 
     static void AddProductToPurchase(ProductManager productManager, PurchaseTransactions purchaseTransactions)
     {

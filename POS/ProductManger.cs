@@ -58,7 +58,7 @@ namespace POS
             return false;
         }
 
-        public Product FindProductByID(int id)
+        public Product? FindProductByID(int id)
         {
             var product = products.FirstOrDefault(p => p.Id == id);
             return product;

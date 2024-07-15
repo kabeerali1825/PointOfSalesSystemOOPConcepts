@@ -25,7 +25,7 @@ namespace POS
 
         public bool ReceiveNewStock(int id, int quantity)
         {
-            var product = productManager.ViewProducts().FirstOrDefault(p => p.Id == id);
+            var product = productManager.ViewProducts()?.FirstOrDefault(p => p.Id == id);
 
             if (product != null)
             {
